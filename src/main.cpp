@@ -6,10 +6,13 @@
 #include "dummyLock.h"
 #include "dummyMotor.h"
 
+void bluetoothComponent(void* paarameter);
+
 std::map<uint16_t, conn_status_t> connectedDevices;
 
 void setup() {
   Serial.begin(115200);
+  bluetoothComponent(NULL);
 }
 
 void loop() {
