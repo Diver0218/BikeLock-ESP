@@ -2,7 +2,6 @@
 #include <BLEDevice.h>
 
 Bluetooth::Bluetooth(const char *deviceName, iLock *lock) : deviceName(deviceName), lock(lock) {
-    serverCallbacks = nullptr;
     server = nullptr;
     service = nullptr;
     characteristic = nullptr;
@@ -10,7 +9,6 @@ Bluetooth::Bluetooth(const char *deviceName, iLock *lock) : deviceName(deviceNam
 }
 
 Bluetooth::~Bluetooth() {
-    delete serverCallbacks;
     delete server;
     delete service;
     delete characteristic;
@@ -35,8 +33,7 @@ void Bluetooth::createService() {
     service->start();
 }
 
-void Bluetooth::setCallbacks() {
-    serverCallbacks = new BluetoothCallbacks();
+void Bluetooth::setCallbacks(BLEServerCallbacks *serverCallbacks) {
     server->setCallbacks(serverCallbacks);
 }
 

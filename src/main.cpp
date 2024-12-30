@@ -24,6 +24,8 @@ void bluetoothComponent (void* paarameter)
     iMotor *safetyMotor = new dummyMotor();
     iLock *lock = new dummyLock(lockMotor, safetyMotor);
 
+    BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
+
     Bluetooth *bluetooth = new Bluetooth("SmartLock", lock);
     bluetooth->initialize();
     bluetooth->createServer();

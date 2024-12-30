@@ -16,7 +16,6 @@ class Bluetooth {
 
 private:
     const char *deviceName;
-    BLEServerCallbacks *serverCallbacks;
     BLEServer *server;
     BLEService *service;
     BLECharacteristic *characteristic;
@@ -29,7 +28,7 @@ public:
     void initialize();
     void createServer();
     void createService();
-    void setCallbacks();
+    void setCallbacks(BLEServerCallbacks *serverCallbacks);
     void startAdvertising();
     bool isConnected();
     bool isValid();
