@@ -1,7 +1,7 @@
 #include "iMotor.h"
 #include <Arduino.h>
 
-class dummyMotor : iMotor {
+class dummyMotor : public iMotor {
     public:
         dummyMotor();
         ~dummyMotor();

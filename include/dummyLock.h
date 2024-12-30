@@ -1,7 +1,7 @@
 #include "iLock.h"
 #include <Arduino.h>
 
-class dummyLock : iLock {
+class dummyLock : public iLock {
 
     public:
         dummyLock(iMotor *lockMotor, iMotor *safetyMotor);
