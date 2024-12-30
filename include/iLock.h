@@ -2,13 +2,13 @@
 
 class iLock {
 
-    private:
+    protected:
         iMotor *lockMotor;
         iMotor *safetyMotor;
+        bool locked;
 
     public:
-        iLock(iMotor *lockMotor, iMotor *safetyMotor);
-        ~iLock();
         virtual void toggleLock() = 0;
+        virtual bool isLocked() = 0;
 
 };
