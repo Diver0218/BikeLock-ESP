@@ -23,6 +23,8 @@ public:
     Bluetooth(const char *deviceName, iLock *lock);
     ~Bluetooth();
     void initialize();
+    void createServer();
+    void createService();
     void setCallbacks();
     void startAdvertising();
     bool isConnected();
