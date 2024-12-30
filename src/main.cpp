@@ -1,18 +1,36 @@
 #include <Arduino.h>
+#include <map>
+#include <BLEServer.h>
 
-// put function declarations here:
-int myFunction(int, int);
+#include "Bluetooth.h"
+#include "dummyLock.h"
+#include "dummyMotor.h"
+
+std::map<uint16_t, conn_status_t> connectedDevices;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+void bluetoothComponent (void* paarameter)
+{
+    iMotor *lockMotor = new dummyMotor();
+    iMotor *safetyMotor = new dummyMotor();
+    iLock *lock = new dummyLock(lockMotor, safetyMotor);
+
+    Bluetooth *bluetooth = new Bluetooth("SmartLock", lock);
+    bluetooth->initialize();
+    bluetooth->createServer();
+    bluetooth->createService();
+    bluetooth->setCallbacks();
+    bluetooth->startAdvertising();
+
+    while (true) {
+        if (bluetooth->isConnected()) {
+            bluetooth->isValid();
+        }
+    }
 }
