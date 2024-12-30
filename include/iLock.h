@@ -1,3 +1,5 @@
+#pragma once
+
 #include "iMotor.h"
 
 class iLock {
@@ -8,7 +10,7 @@ class iLock {
         bool locked;
 
     public:
-        virtual void toggleLock() = 0;
         virtual bool isLocked() = 0;
+        virtual void toggleLock() = 0;
 
 };
