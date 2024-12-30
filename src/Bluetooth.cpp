@@ -44,6 +44,7 @@ void Bluetooth::startAdvertising() {
     advertising = BLEDevice::getAdvertising();
     advertising->addServiceUUID(SERVICE_UUID);
     advertising->start();
+    Serial.println("Advertising started");
 }
 
 bool Bluetooth::isConnected() {
