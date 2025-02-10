@@ -23,18 +23,14 @@ void Bluetooth::createServer() {
     server = BLEDevice::createServer();
 }
 
-void Bluetooth::createService() {
+void Bluetooth::createService(BLECharacteristicCallbacks *characteristicCallbacks) {
     service = server->createService(SERVICE_UUID);
     characteristic = service->createCharacteristic(
         CHARACTERISTIC_UUID,
-        BLECharacteristic::PROPERTY_READ |
         BLECharacteristic::PROPERTY_WRITE
     );
+    characteristic->setCallbacks(characteristicCallbacks);
     service->start();
-}
-
-void Bluetooth::setCallbacks(BLEServerCallbacks *serverCallbacks) {
-    server->setCallbacks(serverCallbacks);
 }
 
 void Bluetooth::startAdvertising() {

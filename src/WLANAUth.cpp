@@ -1,12 +1,11 @@
-#include "Authentication.h"
+#include "WLANAuth.h"
 
-Authentication::Authentication(char* authURL) : authURL(authURL) {}
-
-bool Authentication::authenticate(char* username, char* password){
+bool WLANAuth::validate(std::string token){
+    connectWifi();
     httpClient.begin(authURL);
     httpClient.addHeader("Content-Type", "application/json");
 
-    String payload = "{\"username\":\"" + String(username) + "\",\"password\":\"" + String(password) + "\"}";
+    String payload = "{\"token\":\"" + String(token.c_str()) + "\"}";
     int httpResponseCode = httpClient.POST(payload);
 
     if (httpResponseCode == 200) {
@@ -23,4 +22,13 @@ bool Authentication::authenticate(char* username, char* password){
         httpClient.end();
         return false;
     }
+}
+
+void WLANAuth::connectWifi() {
+    WiFi.begin(wifiName, wifiPassword);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.println("Connecting to WiFi..");
+    }
+    Serial.println("Connected to the WiFi network");
 }

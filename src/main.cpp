@@ -5,6 +5,7 @@
 #include "Bluetooth.h"
 #include "dummyLock.h"
 #include "dummyMotor.h"
+#include "TokenCallbacks.h"
 
 void bluetoothComponent(void* paarameter);
 
@@ -17,12 +18,12 @@ void setup() {
 
     Bluetooth *bluetooth = new Bluetooth("SmartLock", lock);
 
-    BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
+    // BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
+   BLECharacteristicCallbacks *tokenCallbacks = new TokenCallbacks();
 
     bluetooth->initialize();
     bluetooth->createServer();
-    bluetooth->createService();
-    bluetooth->setCallbacks(serverCallbacks);
+    bluetooth->createService(tokenCallbacks);
     bluetooth->startAdvertising();
 }
 
@@ -33,19 +34,19 @@ void loop() {
 
 void bluetoothComponent (void* paarameter)
 {
-    iMotor *lockMotor = new dummyMotor();
-    iMotor *safetyMotor = new dummyMotor();
-    iLock *lock = new dummyLock(lockMotor, safetyMotor);
+    // iMotor *lockMotor = new dummyMotor();
+    // iMotor *safetyMotor = new dummyMotor();
+    // iLock *lock = new dummyLock(lockMotor, safetyMotor);
 
-    Bluetooth *bluetooth = new Bluetooth("SmartLock", lock);
+    // Bluetooth *bluetooth = new Bluetooth("SmartLock", lock);
 
-    BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
+    // BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
 
-    bluetooth->initialize();
-    bluetooth->createServer();
-    bluetooth->createService();
-    bluetooth->setCallbacks(serverCallbacks);
-    bluetooth->startAdvertising();
+    // bluetooth->initialize();
+    // bluetooth->createServer();
+    // bluetooth->createService();
+    // bluetooth->setCallbacks(serverCallbacks);
+    // bluetooth->startAdvertising();
 
     // while (true) {
     //     Serial.println("Checking connection");

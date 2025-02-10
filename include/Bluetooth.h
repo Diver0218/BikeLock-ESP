@@ -9,8 +9,8 @@
 #include "iLock.h"
 #include "BluetoothCallbacks.h"
 
-#define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+#define SERVICE_UUID "ae578e1d-5457-46e4-9eda-ce03a4534896"                 // Custom UUID for Custom Service
+#define CHARACTERISTIC_UUID "0f3bd0a0-7bc0-448f-bd02-793fb412b4af"          // Custom UUID for Custom Characteristic
 
 class Bluetooth {
 
@@ -27,8 +27,7 @@ public:
     ~Bluetooth();
     void initialize();
     void createServer();
-    void createService();
-    void setCallbacks(BLEServerCallbacks *serverCallbacks);
+    void createService(BLECharacteristicCallbacks *characteristicCallbacks);
     void startAdvertising();
     bool isConnected();
     bool isValid();

@@ -1,15 +1,12 @@
-
-
-#include <HTTPClient.h>
+#include <string>
 
 class Authentication {
-    
-private:
-    char* authURL;
-    HTTPClient httpClient;
+
+protected:
+    char* authURL = "http://jamin.chickenkiller.com:8000/LockAuth";
 
 public:
-    Authentication(char* authURL);
+    Authentication();
     
-    bool authenticate(char* username, char* password);
+    virtual bool validate(std::string token) = 0;
 };
