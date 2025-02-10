@@ -2,5 +2,5 @@
 #include "WLANAuth.h"
 
 class TokenCallbacks : public BLECharacteristicCallbacks {
-    void onWrite(BLECharacteristic *characteristic);
+    void onWrite(BLECharacteristic *characteristic) override;
 };

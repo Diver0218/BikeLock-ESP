@@ -3,10 +3,8 @@
 class Authentication {
 
 protected:
-    char* authURL = "http://jamin.chickenkiller.com:8000/LockAuth";
+    char* authURL = "http://192.168.178.49:3498/LockAuth/";
 
 public:
-    Authentication();
-    
     virtual bool validate(std::string token) = 0;
 };

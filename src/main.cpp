@@ -18,11 +18,11 @@ void setup() {
 
     Bluetooth *bluetooth = new Bluetooth("SmartLock", lock);
 
-    // BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
-   BLECharacteristicCallbacks *tokenCallbacks = new TokenCallbacks();
+    BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
+    BLECharacteristicCallbacks *tokenCallbacks = new TokenCallbacks();
 
     bluetooth->initialize();
-    bluetooth->createServer();
+    bluetooth->createServer(serverCallbacks);
     bluetooth->createService(tokenCallbacks);
     bluetooth->startAdvertising();
 }

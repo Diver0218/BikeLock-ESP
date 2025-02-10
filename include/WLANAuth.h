@@ -1,5 +1,6 @@
 #include "Authentication.h"
 #include <HTTPClient.h>
+#include <WiFi.h>
 
 class WLANAuth : public Authentication {
     
@@ -12,5 +13,4 @@ class WLANAuth : public Authentication {
         WLANAuth();
 
         bool validate(std::string token);
-        void connectWifi();
 };

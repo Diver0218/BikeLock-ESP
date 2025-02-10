@@ -1,5 +1,6 @@
 #include "Bluetooth.h"
 #include <BLEDevice.h>
+#include <BLE2902.h>
 
 Bluetooth::Bluetooth(const char *deviceName, iLock *lock) : deviceName(deviceName), lock(lock) {
     server = nullptr;
@@ -8,27 +9,24 @@ Bluetooth::Bluetooth(const char *deviceName, iLock *lock) : deviceName(deviceNam
     advertising = nullptr;
 }
 
-Bluetooth::~Bluetooth() {
-    delete server;
-    delete service;
-    delete characteristic;
-    delete advertising;
-}
-
 void Bluetooth::initialize() {
     BLEDevice::init(deviceName);
 }
 
-void Bluetooth::createServer() {
+void Bluetooth::createServer(BLEServerCallbacks *serverCallbacks) {
     server = BLEDevice::createServer();
+    server->setCallbacks(serverCallbacks);
 }
 
 void Bluetooth::createService(BLECharacteristicCallbacks *characteristicCallbacks) {
     service = server->createService(SERVICE_UUID);
-    characteristic = service->createCharacteristic(
+    characteristic = new BLECharacteristic(
         CHARACTERISTIC_UUID,
         BLECharacteristic::PROPERTY_WRITE
     );
+    service->addCharacteristic(characteristic);
+    auto descriptor = new BLE2902();
+    characteristic->addDescriptor(descriptor);
     characteristic->setCallbacks(characteristicCallbacks);
     service->start();
 }
