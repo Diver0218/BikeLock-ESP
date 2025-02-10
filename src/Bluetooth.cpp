@@ -40,7 +40,10 @@ void Bluetooth::setCallbacks(BLEServerCallbacks *serverCallbacks) {
 void Bluetooth::startAdvertising() {
     advertising = BLEDevice::getAdvertising();
     advertising->addServiceUUID(SERVICE_UUID);
-    advertising->start();
+    advertising->setScanResponse(true);
+    advertising->setMinPreferred(0x06);
+    advertising->setMinPreferred(0x12);
+    BLEDevice::startAdvertising();
     Serial.println("Advertising started");
 }
 
