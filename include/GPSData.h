@@ -1,3 +1,6 @@
+#ifndef GPSDATA_H
+#define GPSDATA_H
+
 #include <ctime>
 
 struct GPSData
@@ -9,4 +12,4 @@ struct GPSData
     GPSData(int latitude, int longitude, int altitude, std::time_t timestamp) : latitude(latitude), longitude(longitude), altitude(altitude), timestamp(timestamp) {}
 };
 
-typedef struct GPSData GPSData;
+#endif // GPSDATA_H

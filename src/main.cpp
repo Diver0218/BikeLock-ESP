@@ -7,6 +7,9 @@
 #include "dummyMotor.h"
 #include "TokenCallbacks.h"
 
+#define TINY_GSM_MODEM_SIM800
+#define TINY_GSM_RX_BUFFER   1024
+
 void bluetoothComponent(void* paarameter);
 
 void setup() {

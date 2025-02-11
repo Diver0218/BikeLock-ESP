@@ -16,4 +16,4 @@ class GPS
         GPSData readGPS();
         void uploadGPS(GPSData data);
 
-}
+};
