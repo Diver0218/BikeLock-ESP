@@ -13,4 +13,5 @@ class WLANAuth : public Authentication {
         WLANAuth();
 
         bool validate(std::string token);
+        String getCSRFToken();
 };
