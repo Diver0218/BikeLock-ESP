@@ -27,10 +27,6 @@ void setup() {
     bluetoothComponent(NULL);
     gpsComponent(NULL);
 
-    // bluetoothComponent(NULL);
-
-
-
 }
 
 void loop() {

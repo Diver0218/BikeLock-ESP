@@ -39,7 +39,7 @@ int WLAN::post(std::string url, std::string payload)
     Serial.println(payload.c_str());
     httpClient.begin(url.c_str());
     httpClient.addHeader("Content-Type", "application/json");
-    int returnCode = httpClient.POST(payload.c_str());
+    int returnCode = httpClient.POST(String(payload.c_str()));
     Serial.print("POST request to: ");
     Serial.println(url.c_str());
     Serial.print(" -> with payload: ");
