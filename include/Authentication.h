@@ -1,10 +1,13 @@
+#include "Internet.h"
 #include <string>
 
 class Authentication {
 
 protected:
-    char* authURL = "http://192.168.178.49:3498/LockAuth/";
+    std::string authURL;
+    Internet *internet_module = nullptr;
 
 public:
-    virtual bool validate(std::string token) = 0;
+    Authentication(Internet *internet_module, std::string authURL);
+    bool validate(std::string token);
 };
