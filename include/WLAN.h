@@ -1,3 +1,6 @@
+#ifndef WLAN_H
+#define WLAN_H
+
 #include <WiFi.h>
 #include <HTTPClient.h>
 
@@ -17,3 +20,5 @@ class WLAN : public Internet {
         int get(std::string url) override;
         int post(std::string url, std::string payload) override;
 };
+
+#endif // WLAN_H

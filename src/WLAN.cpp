@@ -28,6 +28,10 @@ int WLAN::get(std::string url)
 
 int WLAN::post(std::string url, std::string payload)
 {
+    Serial.print("Posting to: ");
+    Serial.print(url.c_str());
+    Serial.print(" with payload: ");
+    Serial.println(payload.c_str());
     httpClient.begin(url.c_str());
     httpClient.addHeader("Content-Type", "application/json");
     return httpClient.POST(payload.c_str());
