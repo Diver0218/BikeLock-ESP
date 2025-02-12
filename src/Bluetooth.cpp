@@ -2,11 +2,18 @@
 #include <BLEDevice.h>
 #include <BLE2902.h>
 
-Bluetooth::Bluetooth(const char *deviceName, iLock *lock) : deviceName(deviceName), lock(lock) {
+Bluetooth::Bluetooth(const char *deviceName) : deviceName(deviceName) {
     server = nullptr;
     service = nullptr;
     characteristic = nullptr;
     advertising = nullptr;
+}
+
+Bluetooth::~Bluetooth() {
+    delete characteristic;
+    delete advertising;
+    delete service;
+    delete server;
 }
 
 void Bluetooth::initialize() {
@@ -43,15 +50,4 @@ void Bluetooth::startAdvertising() {
 
 bool Bluetooth::isConnected() {
     return server->getConnectedCount() > 0;
-}
-
-bool Bluetooth::isValid() {
-for (const auto &device : connectedDevices) {
-    Serial.println(device.first);
-}
-    return server != nullptr && service != nullptr && characteristic != nullptr;
-}
-
-void Bluetooth::toggleLock() {
-    lock->toggleLock();
 }

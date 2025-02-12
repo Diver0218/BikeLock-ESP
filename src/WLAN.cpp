@@ -1,4 +1,5 @@
 #include "WLAN.h"
+#include "globals.h"
 
 WLAN::WLAN(std::string wifiName, std::string wifiPassword) : wifiName(wifiName), wifiPassword(wifiPassword)
 {
@@ -6,6 +7,7 @@ WLAN::WLAN(std::string wifiName, std::string wifiPassword) : wifiName(wifiName),
 
 void WLAN::connect()
 {
+    xSemaphoreTake(gsm_semaphore, portMAX_DELAY);
     WiFi.begin(wifiName.c_str(), wifiPassword.c_str());
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
@@ -17,6 +19,7 @@ void WLAN::connect()
 void WLAN::disconnect()
 {
     WiFi.disconnect();
+    xSemaphoreGive(gsm_semaphore);
 }
 
 int WLAN::get(std::string url)

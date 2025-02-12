@@ -1,6 +1,6 @@
 #include "TokenCallbacks.h"
 
-TokenCallbacks::TokenCallbacks(Internet *internet_module, std::string auth_url) : internet_module(internet_module), auth_url(auth_url), BLECharacteristicCallbacks()
+TokenCallbacks::TokenCallbacks(Internet *internet_module, std::string auth_url, iLock *lock) : internet_module(internet_module), auth_url(auth_url), lock(lock), BLECharacteristicCallbacks()
 {
 }
 
@@ -13,6 +13,7 @@ void TokenCallbacks::onWrite(BLECharacteristic *characteristic)
     if (auth->validate(token))
     {
         Serial.println("Token is valid");
+        lock->toggleLock();
     }
     else
     {

@@ -20,15 +20,13 @@ private:
     BLEService *service;
     BLECharacteristic *characteristic;
     BLEAdvertising *advertising;
-    iLock *lock;
 
 public:
-    Bluetooth(const char *deviceName, iLock *lock);
+    Bluetooth(const char *deviceName);
+    ~Bluetooth();
     void initialize();
     void createServer(BLEServerCallbacks *serverCallbacks);
     void createService(BLECharacteristicCallbacks *characteristicCallbacks);
     void startAdvertising();
     bool isConnected();
-    bool isValid();
-    void toggleLock();
 };
