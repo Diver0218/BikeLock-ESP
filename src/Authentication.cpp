@@ -7,6 +7,7 @@ bool Authentication::validate(std::string token)
     internet_module->connect();
     std::string payload = "{\"token\":\"" + token + "\"}";
     int httpResponseCode = internet_module->post(authURL, payload);
+    internet_module->disconnect();
 
     if (httpResponseCode == 200)
     {
