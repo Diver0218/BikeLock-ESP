@@ -87,6 +87,10 @@ void bluetoothComponent(void* parameter) {
 
     Serial.println("Cleaning up Bluetooth resources");
     Serial.println("Bluetooth component finished");
+
+    while(true) {
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
 }
 
 void gpsComponent(void* parameter) {
@@ -101,9 +105,9 @@ void gpsComponent(void* parameter) {
     Serial.println("Reading GPS data");
     gps->uploadGPS(gps->readGPS());
 
-    Serial.println("Cleaning up GPS resources");
-    delete gps;
-    delete gps_module;
-
     Serial.println("GPS component finished");
+
+    while(true) {
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+    }
 }
