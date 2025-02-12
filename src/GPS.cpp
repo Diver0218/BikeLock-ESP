@@ -13,7 +13,5 @@ void GPS::uploadGPS(GPSData data){
     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &tm);
     std::string formatted_time(buffer);
     std::string payload = "{\"latitude\": " + std::to_string(data.latitude) + ", \"longitude\": " + std::to_string(data.longitude) + ", \"timestamp\": \"" + formatted_time + "\"}";
-    int returncode = internet_module->post(url, payload);
-    Serial.print("Return code: ");
-    Serial.println(returncode);
+    internet_module->post(url, payload);
 }

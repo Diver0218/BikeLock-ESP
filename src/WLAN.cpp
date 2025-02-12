@@ -24,6 +24,10 @@ int WLAN::get(std::string url)
     httpClient.begin(url.c_str());
     httpClient.addHeader("Content-Type", "application/json");
     int returnCode = httpClient.GET();
+    Serial.print("GET request to: ");
+    Serial.println(url.c_str());
+    Serial.print(" -> returned: ");
+    Serial.println(returnCode);
     return returnCode;
 }
 
@@ -36,5 +40,11 @@ int WLAN::post(std::string url, std::string payload)
     httpClient.begin(url.c_str());
     httpClient.addHeader("Content-Type", "application/json");
     int returnCode = httpClient.POST(payload.c_str());
+    Serial.print("POST request to: ");
+    Serial.println(url.c_str());
+    Serial.print(" -> with payload: ");
+    Serial.println(payload.c_str());
+    Serial.print(" -> returned: ");
+    Serial.println(returnCode);
     return returnCode;
 }
