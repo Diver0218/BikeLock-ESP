@@ -3,6 +3,8 @@
 #include <map>
 #include <stdint.h>
 
+#include "globals.h"
+
 extern std::map<uint16_t, conn_status_t> connectedDevices;
 
 class BluetoothCallbacks : public BLEServerCallbacks

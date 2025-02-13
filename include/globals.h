@@ -3,5 +3,6 @@
 
 #include <freertos/semphr.h>
 extern SemaphoreHandle_t gsm_semaphore;
+extern bool bluetoothExecuting;
 
 #endif // GMS_SEMAPHORE

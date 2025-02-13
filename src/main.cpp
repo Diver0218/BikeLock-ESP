@@ -2,8 +2,13 @@
 #include <freertos/semphr.h>
 
 #include "globals.h"
+#include "privateData.h"
 
 SemaphoreHandle_t gsm_semaphore;
+
+RTC_DATA_ATTR int GPSCount = 50;
+int readyToSleep = 0;
+bool bluetoothExecuting = false;
 
 #define TINY_GSM_MODEM_SIM800
 #define TINY_GSM_RX_BUFFER   1024
@@ -25,8 +30,10 @@ SemaphoreHandle_t gsm_semaphore;
 
 void bluetoothComponent(void* parameter);
 void gpsComponent(void* parameter);
+void checkSleep();
+bool checkGPSExecution();
 
-Internet *wlan = new WLAN("Das gelobte LAN", "joxmag-qAxrad-zimwi2");
+Internet *wlan = new WLAN(wifiName, wifiPassword);
 
 void setup() {
     Serial.begin(115200);
@@ -46,14 +53,20 @@ void setup() {
         Serial.println("Bluetooth task created successfully");
     }
 
-    BaseType_t gpsTask = xTaskCreatePinnedToCore(gpsComponent, "GPSTask", 8192, NULL, 1, NULL, 1);
-    if (gpsTask != pdPASS) {
-        Serial.println("Failed to create GPS task");
-    } else {
-        Serial.println("GPS task created successfully");
+    if (checkGPSExecution())
+    {
+        BaseType_t gpsTask = xTaskCreatePinnedToCore(gpsComponent, "GPSTask", 8192, NULL, 1, NULL, 1);
+        if (gpsTask != pdPASS) {
+            Serial.println("Failed to create GPS task");
+        } else {
+            Serial.println("GPS task created successfully");
+        }
     }
-
-    Serial.println("Setup completed");
+    else
+    {
+        Serial.println("GPS task not created");
+        readyToSleep++;
+    }
 }
 
 void loop() {
@@ -63,7 +76,7 @@ void loop() {
 
 void bluetoothComponent(void* parameter) {
     Serial.printf("BL: Free heap: %u\n", esp_get_free_heap_size());
-    Serial.println("Bluetooth component started");
+    Serial.println("\n-------------------------------------\nBluetooth component started\n-------------------------------------\n");
 
     iMotor *lockMotor = new dummyMotor();
     iMotor *safetyMotor = new dummyMotor();
@@ -85,17 +98,23 @@ void bluetoothComponent(void* parameter) {
     Serial.println("Starting Bluetooth advertising");
     bluetooth->startAdvertising();
 
-    Serial.println("Cleaning up Bluetooth resources");
+    
+    vTaskDelay(3000 / portTICK_PERIOD_MS);
     Serial.println("Bluetooth component finished");
 
-    while(true) {
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+    if (bluetoothExecuting)
+    {
+        Serial.println("Bluetooth still executing, waiting for it to finish");
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
+
+    checkSleep();
+    vTaskDelete(NULL);
 }
 
 void gpsComponent(void* parameter) {
     Serial.printf("GPS: Free heap: %u\n", esp_get_free_heap_size());
-    Serial.println("GPS component started");
+    Serial.println("\n-------------------------------------\nGPS component started\n-------------------------------------\n");
 
     iGPS_Module *gps_module = new dummyGPS_Module();
 
@@ -105,9 +124,45 @@ void gpsComponent(void* parameter) {
     Serial.println("Reading GPS data");
     gps->uploadGPS(gps->readGPS());
 
+    Serial.println("Cleaning up GPS resources");
+    delete gps;
+    delete gps_module;
+
     Serial.println("GPS component finished");
 
-    while(true) {
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+    checkSleep();
+    vTaskDelete(NULL);
+}
+
+void checkSleep() {
+    Serial.println("Checking if ready to sleep...");
+    readyToSleep++;
+    if (readyToSleep == 2)
+    {
+        readyToSleep = 0;
+        Serial.println("\n-------------------------------------\nGoing to sleep\n-------------------------------------\n");
+
+        esp_sleep_enable_timer_wakeup(5 * 1000000);
+        esp_deep_sleep_start();
+    }
+    else
+    {
+        Serial.print("Not ready to sleep yet, counter at: ");
+        Serial.print(readyToSleep);
+        Serial.println("   needs to be 2");
+    }
+}
+
+bool checkGPSExecution()
+{
+    if (GPSCount == 50)
+    {
+        GPSCount = 0;
+        return true;
+    }
+    else
+    {
+        GPSCount++;
+        return false;
     }
 }

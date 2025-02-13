@@ -5,6 +5,8 @@
 #include "WLAN.h"
 #include "iLock.h"
 
+#include "globals.h"
+
 class TokenCallbacks : public BLECharacteristicCallbacks {
     
     private:
