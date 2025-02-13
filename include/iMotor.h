@@ -3,5 +3,5 @@
 class iMotor
 {   
     public:
-        virtual void rotate(int degree) = 0;
+        virtual void rotate(int steps) = 0;
 };

@@ -13,12 +13,24 @@ bool bluetoothExecuting = false;
 #define TINY_GSM_MODEM_SIM800
 #define TINY_GSM_RX_BUFFER   1024
 
+#define GSM_RX 0
+#define GSM_TX 0
+
+#define STEPPER_PIN_1 32
+#define STEPPER_PIN_2 33
+#define STEPPER_PIN_3 25
+#define STEPPER_PIN_4 26
+
+#define STEPPER_RESOLUTION 32
+#define STEPS_TO_LOCK 64
+
 #include <Arduino.h>
 #include <map>
 #include <BLEServer.h>
 
 #include "Bluetooth.h"
-#include "dummyLock.h"
+#include "Lock.h"
+#include "Stepper_Motor.h"
 #include "dummyMotor.h"
 #include "TokenCallbacks.h"
 
@@ -78,9 +90,9 @@ void bluetoothComponent(void* parameter) {
     Serial.printf("BL: Free heap: %u\n", esp_get_free_heap_size());
     Serial.println("\n-------------------------------------\nBluetooth component started\n-------------------------------------\n");
 
-    iMotor *lockMotor = new dummyMotor();
+    iMotor *lockMotor = new Stepper_Motor(STEPPER_RESOLUTION, STEPPER_PIN_1, STEPPER_PIN_2, STEPPER_PIN_3, STEPPER_PIN_4);
     iMotor *safetyMotor = new dummyMotor();
-    iLock *lock = new dummyLock(lockMotor, safetyMotor);
+    iLock *lock = new Lock(lockMotor, safetyMotor, STEPS_TO_LOCK);
 
     Bluetooth *bluetooth = new Bluetooth("SmartLock");
 
