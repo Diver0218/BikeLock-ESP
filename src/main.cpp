@@ -111,7 +111,7 @@ void bluetoothComponent(void* parameter) {
     bluetooth->startAdvertising();
 
     
-    vTaskDelay(3000 / portTICK_PERIOD_MS);
+    vTaskDelay(2000 / portTICK_PERIOD_MS);
     Serial.println("Bluetooth component finished");
 
     if (bluetoothExecuting)
@@ -154,7 +154,7 @@ void checkSleep() {
         readyToSleep = 0;
         Serial.println("\n-------------------------------------\nGoing to sleep\n-------------------------------------\n");
 
-        esp_sleep_enable_timer_wakeup(5 * 1000000);
+        esp_sleep_enable_timer_wakeup(7 * 1000000);
         esp_deep_sleep_start();
     }
     else
