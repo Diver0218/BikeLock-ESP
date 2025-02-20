@@ -21,8 +21,9 @@ bool bluetoothExecuting = false;
 #define STEPPER_PIN_3 25
 #define STEPPER_PIN_4 26
 
-#define STEPPER_RESOLUTION 32
-#define STEPS_TO_LOCK 64
+#define STEPPER_RESOLUTION 2048
+#define STEPS_TO_LOCK 2048
+#define STEPPER_SPEED 10
 
 #include <Arduino.h>
 #include <map>
@@ -90,7 +91,7 @@ void bluetoothComponent(void* parameter) {
     Serial.printf("BL: Free heap: %u\n", esp_get_free_heap_size());
     Serial.println("\n-------------------------------------\nBluetooth component started\n-------------------------------------\n");
 
-    iMotor *lockMotor = new Stepper_Motor(STEPPER_RESOLUTION, STEPPER_PIN_1, STEPPER_PIN_2, STEPPER_PIN_3, STEPPER_PIN_4);
+    iMotor *lockMotor = new Stepper_Motor(STEPPER_RESOLUTION, STEPPER_PIN_1, STEPPER_PIN_2, STEPPER_PIN_3, STEPPER_PIN_4, STEPPER_SPEED);
     iMotor *safetyMotor = new dummyMotor();
     iLock *lock = new Lock(lockMotor, safetyMotor, STEPS_TO_LOCK);
 
@@ -111,7 +112,7 @@ void bluetoothComponent(void* parameter) {
     bluetooth->startAdvertising();
 
     
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
+    vTaskDelay(3000 / portTICK_PERIOD_MS);
     Serial.println("Bluetooth component finished");
 
     if (bluetoothExecuting)
