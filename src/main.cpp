@@ -1,5 +1,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
+#include <esp_task_wdt.h>
 
 #include "globals.h"
 #include "privateData.h"
@@ -24,6 +25,8 @@ bool bluetoothExecuting = false;
 #define STEPPER_RESOLUTION 2048
 #define STEPS_TO_LOCK 2048
 #define STEPPER_SPEED 10
+
+#define WDT_TIMEOUT 12 //Sekunden
 
 #include <Arduino.h>
 #include <map>
@@ -51,6 +54,8 @@ Internet *wlan = new WLAN(wifiName, wifiPassword);
 void setup() {
     Serial.begin(115200);
     Serial.println("Setup started");
+
+    esp_task_wdt_init(WDT_TIMEOUT, true);
 
     gsm_semaphore = xSemaphoreCreateMutex();
     if (gsm_semaphore == NULL) {
@@ -91,6 +96,9 @@ void bluetoothComponent(void* parameter) {
     Serial.printf("BL: Free heap: %u\n", esp_get_free_heap_size());
     Serial.println("\n-------------------------------------\nBluetooth component started\n-------------------------------------\n");
 
+    esp_task_wdt_add(NULL);
+    esp_task_wdt_reset();
+
     iMotor *lockMotor = new Stepper_Motor(STEPPER_RESOLUTION, STEPPER_PIN_1, STEPPER_PIN_2, STEPPER_PIN_3, STEPPER_PIN_4, STEPPER_SPEED);
     iMotor *safetyMotor = new dummyMotor();
     iLock *lock = new Lock(lockMotor, safetyMotor, STEPS_TO_LOCK);
@@ -121,6 +129,7 @@ void bluetoothComponent(void* parameter) {
         vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 
+    esp_task_wdt_reset();
     checkSleep();
     vTaskDelete(NULL);
 }
@@ -128,6 +137,9 @@ void bluetoothComponent(void* parameter) {
 void gpsComponent(void* parameter) {
     Serial.printf("GPS: Free heap: %u\n", esp_get_free_heap_size());
     Serial.println("\n-------------------------------------\nGPS component started\n-------------------------------------\n");
+
+    esp_task_wdt_add(NULL);
+    esp_task_wdt_reset();
 
     iGPS_Module *gps_module = new dummyGPS_Module();
 
@@ -143,6 +155,7 @@ void gpsComponent(void* parameter) {
 
     Serial.println("GPS component finished");
 
+    esp_task_wdt_reset();
     checkSleep();
     vTaskDelete(NULL);
 }
