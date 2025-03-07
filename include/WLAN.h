@@ -2,7 +2,7 @@
 #define WLAN_H
 
 #include <WiFi.h>
-#include <HTTPClient.h>
+#include <C:\Users\Dsche\.platformio\packages\framework-arduinoespressif32\libraries\HTTPClient\src\HTTPClient.h>
 
 #include "Internet.h"
 
