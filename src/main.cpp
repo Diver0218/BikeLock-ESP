@@ -14,8 +14,8 @@ bool bluetoothExecuting = false;
 #define TINY_GSM_MODEM_SIM800
 #define TINY_GSM_RX_BUFFER   1024
 
-#define GSM_RX 0
-#define GSM_TX 0
+#define GSM_RX 16
+#define GSM_TX 17
 
 #define STEPPER_PIN_1 32
 #define STEPPER_PIN_2 33
@@ -26,7 +26,12 @@ bool bluetoothExecuting = false;
 #define STEPS_TO_LOCK 2048
 #define STEPPER_SPEED 10
 
-#define WDT_TIMEOUT 12 //Sekunden
+#define WDT_TIMEOUT 30 //Sekunden
+
+#define URL "https://jamin.chickenkiller.com"
+#define AUTH_URL "/LockAuth/"
+#define GPS_URL "/GPSData/"
+
 
 #include <Arduino.h>
 #include <map>
@@ -43,17 +48,24 @@ bool bluetoothExecuting = false;
 #include "Internet.h"
 #include "dummyGPS_Module.h"
 #include "WLAN.h"
+#include "Cellular.h"
 
 void bluetoothComponent(void* parameter);
 void gpsComponent(void* parameter);
 void checkSleep();
 bool checkGPSExecution();
 
-Internet *wlan = new WLAN(wifiName, wifiPassword);
+#ifdef USE_WIFI
+    Internet *internet = new WLAN(wifiName, wifiPassword);
+#else
+    Internet *internet = new Cellular(pin1, apn, user, pass, GSM_RX, GSM_TX);
+#endif
 
 void setup() {
     Serial.begin(115200);
     Serial.println("Setup started");
+
+    
 
     esp_task_wdt_init(WDT_TIMEOUT, true);
 
@@ -105,10 +117,10 @@ void bluetoothComponent(void* parameter) {
 
     Bluetooth *bluetooth = new Bluetooth("SmartLock");
 
-    std::string auth_url = "http://192.168.178.49:3498/LockAuth/";
+    std::string auth_url = std::string(URL) + std::string(AUTH_URL);
 
     BLEServerCallbacks *serverCallbacks = new BluetoothCallbacks();
-    BLECharacteristicCallbacks *tokenCallbacks = new TokenCallbacks(wlan, auth_url, lock);
+    BLECharacteristicCallbacks *tokenCallbacks = new TokenCallbacks(internet, auth_url, lock);
 
     Serial.println("Initializing Bluetooth");
     bluetooth->initialize();
@@ -143,9 +155,9 @@ void gpsComponent(void* parameter) {
 
     iGPS_Module *gps_module = new dummyGPS_Module();
 
-    std::string gps_url = "http://192.168.178.49:3498/GPSData/";
+    std::string gps_url = std::string(URL) + std::string(GPS_URL);
 
-    GPS *gps = new GPS(gps_url, gps_module, wlan);
+    GPS *gps = new GPS(gps_url, gps_module, internet);
     Serial.println("Reading GPS data");
     gps->uploadGPS(gps->readGPS());
 
