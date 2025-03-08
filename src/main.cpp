@@ -26,7 +26,7 @@ bool bluetoothExecuting = false;
 #define STEPS_TO_LOCK 2048
 #define STEPPER_SPEED 10
 
-#define WDT_TIMEOUT 30 //Sekunden
+#define WDT_TIMEOUT 60 //Sekunden
 
 #define URL "jamin.chickenkiller.com"
 // #define URL "79.249.91.73"
@@ -155,8 +155,8 @@ void gpsComponent(void* parameter) {
     esp_task_wdt_add(NULL);
     esp_task_wdt_reset();
 
-    // iGPS_Module *gps_module = new GPS_Module(pin1, apn, user, pass, GSM_RX, GSM_TX);
-    iGPS_Module *gps_module = new dummyGPS_Module();
+    iGPS_Module *gps_module = new GPS_Module(pin1, apn, user, pass, GSM_RX, GSM_TX);
+    // iGPS_Module *gps_module = new dummyGPS_Module();
 
     std::string gps_url = std::string(URL) + std::string(GPS_URL);
 
