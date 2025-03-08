@@ -13,7 +13,7 @@ void Cellular::connect()
     modem = new HardwareSerial(2);
     modem->begin(9600, SERIAL_8N1, rx, tx);
 
-    sendSerial("AT+CFUN=1,1", 4000);                              // Modem einschalten
+    sendSerial("AT+CFUN=1,1", 4000);                        // Modem einschalten
     sendSerial("AT+CPIN=\"" + pin + "\"");                  // PIN setzen
     sendSerial("AT+CGATT=1");                               // GPRS-Anmeldung erzwingen
     sendSerial("AT+SAPBR=0,1");                             // GPRS-Verbindung löschen   
