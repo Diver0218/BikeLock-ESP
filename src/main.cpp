@@ -28,7 +28,8 @@ bool bluetoothExecuting = false;
 
 #define WDT_TIMEOUT 30 //Sekunden
 
-#define URL "http://jamin.chickenkiller.com"
+#define URL "jamin.chickenkiller.com"
+// #define URL "79.249.91.73"
 #define AUTH_URL "/LockAuth/"
 #define GPS_URL "/GPSData/"
 
