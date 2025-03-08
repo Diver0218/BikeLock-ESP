@@ -3,7 +3,10 @@
 GPS::GPS(std::string url, iGPS_Module *module, Internet *internet_module): url(url), module(module), internet_module(internet_module) {}
 
 GPSData GPS::readGPS(){
-    return module->getGPSData();
+    module->connect();
+    GPSData response =  module->getGPSData();
+    module->disconnect();
+    return response;
 }
 
 void GPS::uploadGPS(GPSData data){

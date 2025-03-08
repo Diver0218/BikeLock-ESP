@@ -11,3 +11,11 @@ GPSData dummyGPS_Module::getGPSData()
     timestamp.tm_sec = 6;
     return GPSData(0, 0, timestamp);
 }
+
+void dummyGPS_Module::connect()
+{
+}
+
+void dummyGPS_Module::disconnect()
+{
+}
