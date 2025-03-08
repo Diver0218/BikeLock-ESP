@@ -3,10 +3,7 @@
 
 GPS_Module::GPS_Module(const char* pin, int rx, int tx)
 {
-    SoftwareSerial SerialAT(rx, tx);
-    modem = new TinyGsm(SerialAT);
-    modem->begin(pin);
-    Serial.println("GPS_Module initialized");
+    HardwareSerial *modem = new HardwareSerial(2);
 }
 
 GPSData GPS_Module::getGPSData()
@@ -23,19 +20,7 @@ GPSData GPS_Module::getGPSData()
     Serial.println("Attempting to take semaphore");
     xSemaphoreTake(gsm_semaphore, portMAX_DELAY);
     Serial.println("Semaphore taken");
-    if (modem->getGsmLocation(&gsm_latitude, &gsm_longitude, NULL, &gsm_year, &gsm_month, &gsm_day, &gsm_hour, &gsm_minute, &gsm_second))
-    {
-        std::tm timestamp;
-        timestamp.tm_year = gsm_year - 1900; // tm_year is years since 1900
-        timestamp.tm_mon = gsm_month - 1;    // tm_mon is 0-11
-        timestamp.tm_mday = gsm_day;
-        timestamp.tm_hour = gsm_hour;
-        timestamp.tm_min = gsm_minute;
-        timestamp.tm_sec = gsm_second;
-        xSemaphoreGive(gsm_semaphore);
-        Serial.println("Semaphore given");
-        return GPSData(gsm_latitude, gsm_longitude, timestamp);    
-    }
+
     Serial.println("Failed to get GPS location");
     xSemaphoreGive(gsm_semaphore);
     Serial.println("Semaphore given");
