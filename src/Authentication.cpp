@@ -4,7 +4,6 @@ Authentication::Authentication(Internet *internet_module, std::string authURL) :
 
 bool Authentication::validate(std::string token)
 {
-    Serial.println("Validating token");
     internet_module->connect();
     std::string payload = "{\"token\":\"" + token + "\"}";
     int httpResponseCode = internet_module->post(authURL, payload);

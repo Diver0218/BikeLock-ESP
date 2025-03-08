@@ -10,6 +10,7 @@ void TokenCallbacks::onWrite(BLECharacteristic *characteristic)
     Authentication *auth = new Authentication(internet_module, auth_url);
     Serial.print("Token received: ");
     Serial.println(token.c_str());
+    Serial.println("Validating token");
     if (auth->validate(token))
     {
         Serial.println("Token is valid");
