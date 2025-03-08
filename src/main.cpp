@@ -7,9 +7,17 @@
 
 SemaphoreHandle_t gsm_semaphore;
 
-RTC_DATA_ATTR int GPSCount = 50;
+#define SKIP_BEGINNING_GPS
+
+#ifdef SKIP_BEGINNING_GPS
+    RTC_DATA_ATTR int GPSCount = 0;
+#else
+    RTC_DATA_ATTR int GPSCount = 50;
+#endif
+
 int readyToSleep = 0;
 bool bluetoothExecuting = false;
+bool CallbackExecuting = false;
 
 #define TINY_GSM_MODEM_SIM800
 #define TINY_GSM_RX_BUFFER   1024
@@ -134,10 +142,10 @@ void bluetoothComponent(void* parameter) {
     bluetooth->startAdvertising();
 
     
-    vTaskDelay(3000 / portTICK_PERIOD_MS);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
     Serial.println("Bluetooth component finished");
 
-    if (bluetoothExecuting)
+    while (bluetoothExecuting || CallbackExecuting)
     {
         Serial.println("Bluetooth still executing, waiting for it to finish");
         vTaskDelay(5000 / portTICK_PERIOD_MS);

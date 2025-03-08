@@ -6,6 +6,7 @@ TokenCallbacks::TokenCallbacks(Internet *internet_module, std::string auth_url, 
 
 void TokenCallbacks::onWrite(BLECharacteristic *characteristic)
 {
+    CallbackExecuting = true;
     std::string token = characteristic->getValue();
     Authentication *auth = new Authentication(internet_module, auth_url);
     Serial.print("Token received: ");
@@ -20,4 +21,5 @@ void TokenCallbacks::onWrite(BLECharacteristic *characteristic)
     {
         Serial.println("Token is invalid");
     }
+    CallbackExecuting = false;
 }
