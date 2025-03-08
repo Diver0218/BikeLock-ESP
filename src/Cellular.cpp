@@ -45,15 +45,15 @@ int Cellular::get(std::string url)
     sendSerial("AT+HTTPACTION=0");                          // HTTP-GET ausführen
     std::string response = sendSerial("AT+HTTPREAD");       // Antwort lesen
     sendSerial("AT+HTTPTERM");                              // HTTP-Session beenden
-    size_t pos = response.find(":");
-    if (pos != std::string::npos) {
-        response = response.substr(pos + 1);
-        pos = response.find(",");
-        if (pos != std::string::npos) {
-            response = response.substr(0, pos);
-        }
-    }
-    return atoi(response.c_str());
+
+
+    //+HTTPACTION: 1,200,28
+    size_t coma = response.find(",");
+    response = response.substr(coma + 1, 3);
+
+    int returncode = atoi(response.c_str()); 
+    Serial.println(("HTTP GET Response: " + std::to_string(returncode)).c_str());
+    return returncode;
 }
 
 int Cellular::post(std::string url, std::string payload)
@@ -67,16 +67,14 @@ int Cellular::post(std::string url, std::string payload)
     sendSerial(payload.c_str());
     sendSerial("AT+HTTPACTION=1");                          // HTTP-GET ausführen
     std::string response = sendSerial("AT+HTTPREAD");       // Antwort lesen
-    size_t pos = response.find(":");
-    if (pos != std::string::npos) {
-        response = response.substr(pos + 1);
-        pos = response.find(",");
-        if (pos != std::string::npos) {
-            response = response.substr(0, pos);
-        }
-    }
     sendSerial("AT+HTTPTERM");                              // HTTP-Session beenden
-    return atoi(response.c_str());
+
+    size_t coma = response.find(",");
+    response = response.substr(coma + 1, 3);
+    
+    int returncode = atoi(response.c_str()); 
+    Serial.println(("HTTP GET Response: " + std::to_string(returncode)).c_str());
+    return returncode;
 }
 
 std::string Cellular::sendSerial(std::string message, int taskdelay)
