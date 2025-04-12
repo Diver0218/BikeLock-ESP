@@ -32,8 +32,8 @@ void Bluetooth::createService(BLECharacteristicCallbacks *characteristicCallback
         BLECharacteristic::PROPERTY_WRITE
     );
     service->addCharacteristic(characteristic);
-    auto descriptor = new BLE2902();
-    characteristic->addDescriptor(descriptor);
+    // auto descriptor = new BLE2902();
+    // characteristic->addDescriptor(descriptor);
     characteristic->setCallbacks(characteristicCallbacks);
     service->start();
 }
