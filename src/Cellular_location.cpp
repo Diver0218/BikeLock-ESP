@@ -1,11 +1,11 @@
-#include "GPS_Module.h"
+#include "Cellular_location.h"
 
 
-GPS_Module::GPS_Module(std::string pin, std::string apn, std::string user, std::string password, int rx, int tx) : pin(pin), apn(apn), user(user), pass(password), rx(rx), tx(tx)
+Cellular_location::Cellular_location(std::string pin, std::string apn, std::string user, std::string password, int rx, int tx) : pin(pin), apn(apn), user(user), pass(password), rx(rx), tx(tx)
 {
 }
 
-GPSData GPS_Module::getGPSData()
+GPSData Cellular_location::getGPSData()
 {
     float gsm_latitude  = 0;
     float gsm_longitude = 0;
@@ -123,7 +123,7 @@ GPSData GPS_Module::getGPSData()
     return GPSData(gsm_latitude, gsm_longitude, timeinfo);
 }
 
-void GPS_Module::connect()
+void Cellular_location::connect()
 {
     Serial.println("Attempting to take semaphore");
     xSemaphoreTake(gsm_semaphore, portMAX_DELAY);
@@ -143,7 +143,7 @@ void GPS_Module::connect()
     sendSerial("AT+SAPBR=2,1", 2000);                       // Verbindung prüfen^
 }
 
-void GPS_Module::disconnect()
+void Cellular_location::disconnect()
 {
     sendSerial("AT+SAPBR=0,1");                             // GPRS-Verbindung löschen
     sendSerial("AT+CGATT=0");                               // GPRS-Anmeldung beenden
@@ -152,7 +152,7 @@ void GPS_Module::disconnect()
     xSemaphoreGive(gsm_semaphore);
 }
 
-std::string GPS_Module::sendSerial(std::string message, int taskdelay)
+std::string Cellular_location::sendSerial(std::string message, int taskdelay)
 {
     Serial.println(("Sending: " + message).c_str());
     modem->println(message.c_str());

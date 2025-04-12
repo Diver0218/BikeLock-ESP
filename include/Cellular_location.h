@@ -4,10 +4,10 @@
 #include <sstream>
 
 #include "globals.h"
-#include "iGPS_Module.h"
+#include "Location.h"
 
 
-class GPS_Module: public iGPS_Module
+class Cellular_location: public Location
 {
     private:
         HardwareSerial *modem;
@@ -19,7 +19,7 @@ class GPS_Module: public iGPS_Module
         int tx;
 
     public:
-        GPS_Module(std::string pin, std::string apn, std::string user, std::string password, int rx, int tx);
+        Cellular_location(std::string pin, std::string apn, std::string user, std::string password, int rx, int tx);
 
         GPSData getGPSData() override;
         void connect() override;

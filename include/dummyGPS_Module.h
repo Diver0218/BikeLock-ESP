@@ -1,6 +1,6 @@
-#include "iGPS_Module.h"
+#include "Location.h"
 
-class dummyGPS_Module : public iGPS_Module
+class dummyGPS_Module : public Location
 {
     public:
         GPSData getGPSData() override;

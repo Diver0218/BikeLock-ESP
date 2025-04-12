@@ -52,9 +52,9 @@ bool CallbackExecuting = false;
 #include "dummyMotor.h"
 #include "TokenCallbacks.h"
 
-#include "GPS.h"
-#include "iGPS_Module.h"
-#include "GPS_Module.h"
+#include "Location_component.h"
+#include "Location.h"
+#include "Cellular_Location.h"
 #include "Internet.h"
 #include "dummyGPS_Module.h"
 #include "WLAN.h"
@@ -163,18 +163,18 @@ void gpsComponent(void* parameter) {
     esp_task_wdt_add(NULL);
     esp_task_wdt_reset();
 
-    iGPS_Module *gps_module = new GPS_Module(pin1, apn, user, pass, GSM_RX, GSM_TX);
+    Location *location_module = new Cellular_location(pin1, apn, user, pass, GSM_RX, GSM_TX);
     // iGPS_Module *gps_module = new dummyGPS_Module();
 
     std::string gps_url = std::string(URL) + std::string(GPS_URL);
 
-    GPS *gps = new GPS(gps_url, gps_module, internet);
+    Location_component *location = new Location_component(gps_url, location_module, internet);
     Serial.println("Reading GPS data");
-    gps->uploadGPS(gps->readGPS());
+    location->uploadGPS(location->readGPS());
 
     Serial.println("Cleaning up GPS resources");
-    delete gps;
-    delete gps_module;
+    delete location;
+    delete location_module;
 
     Serial.println("GPS component finished");
 

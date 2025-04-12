@@ -1,15 +1,15 @@
-#include "GPS.h"
+#include "Location_component.h"
 
-GPS::GPS(std::string url, iGPS_Module *module, Internet *internet_module): url(url), module(module), internet_module(internet_module) {}
+Location_component::Location_component(std::string url, Location *module, Internet *internet_module): url(url), module(module), internet_module(internet_module) {}
 
-GPSData GPS::readGPS(){
+GPSData Location_component::readGPS(){
     module->connect();
     GPSData response =  module->getGPSData();
     module->disconnect();
     return response;
 }
 
-void GPS::uploadGPS(GPSData data){
+void Location_component::uploadGPS(GPSData data){
     std::tm tm = data.timestamp;
     char buffer[20];
     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &tm);

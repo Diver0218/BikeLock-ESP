@@ -2,19 +2,19 @@
 #include <HardwareSerial.h>
 
 #include "GPSData.h"
-#include "iGPS_Module.h"
+#include "Location.h"
 #include "Internet.h"
 
-class GPS
+class Location_component
 {
 
     private:
         std::string url;
-        iGPS_Module *module;
+        Location *module;
         Internet *internet_module = nullptr;
 
     public:
-        GPS(std::string url, iGPS_Module *module, Internet *internet_module);
+        Location_component(std::string url, Location *module, Internet *internet_module);
 
         GPSData readGPS();
         void uploadGPS(GPSData data);
