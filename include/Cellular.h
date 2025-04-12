@@ -10,7 +10,7 @@ class Cellular : public Internet
 {
 
     private:
-        HardwareSerial *modem;
+        HardwareSerial *serialAT;
         std::string apn;
         std::string user;
         std::string pass;

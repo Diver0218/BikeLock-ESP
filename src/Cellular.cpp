@@ -10,8 +10,8 @@ void Cellular::connect()
     xSemaphoreTake(gsm_semaphore, portMAX_DELAY);
 
     // Initialize Serial2 (UART2) on ESP32 (RX=16, TX=17)
-    modem = new HardwareSerial(2);
-    modem->begin(9600, SERIAL_8N1, rx, tx);
+    serialAT = new HardwareSerial(2);
+    serialAT->begin(9600, SERIAL_8N1, rx, tx);
 
     sendSerial("AT+CFUN=1,1", 4000);                        // Modem einschalten
     sendSerial("AT+CPIN=\"" + pin + "\"");                  // PIN setzen
@@ -32,7 +32,7 @@ void Cellular::disconnect()
     sendSerial("AT+SAPBR=0,1");                             // GPRS-Verbindung löschen
     sendSerial("AT+CGATT=0");                               // GPRS-Anmeldung beenden
     sendSerial("AT+CFUN=0");                            // Modem in den Schlafmodus versetzen
-    delete modem;
+    delete serialAT;
     xSemaphoreGive(gsm_semaphore);
 }
 
@@ -80,13 +80,13 @@ int Cellular::post(std::string url, std::string payload)
 std::string Cellular::sendSerial(std::string message, int taskdelay)
 {
     Serial.println(("Sending: " + message).c_str());
-    modem->println(message.c_str());
+    serialAT->println(message.c_str());
     vTaskDelay(taskdelay / portTICK_PERIOD_MS);
     char buffer[2048];
     int index = 0;
-    while (modem->available() && index < 2047)
+    while (serialAT->available() && index < 2047)
     {
-        buffer[index++] = modem->read();
+        buffer[index++] = serialAT->read();
     }
     buffer[index] = '\0';
     Serial.println(("Received: " + std::string(buffer)).c_str());
