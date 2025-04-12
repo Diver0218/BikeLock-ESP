@@ -30,4 +30,5 @@ class Cellular_lib : public Internet
         void disconnect() override;
         int get(std::string url) override;
         int post(std::string url, std::string payload) override;
+        std::string sendSerial(std::string message, int taskdelay = 1000);
 };
