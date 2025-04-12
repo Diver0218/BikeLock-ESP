@@ -58,7 +58,7 @@ bool CallbackExecuting = false;
 #include "Internet.h"
 #include "dummyGPS_Module.h"
 #include "WLAN.h"
-#include "Cellular.h"
+#include "Cellular_lib.h"
 
 void bluetoothComponent(void* parameter);
 void gpsComponent(void* parameter);
@@ -68,7 +68,7 @@ bool checkGPSExecution();
 #ifdef USE_WIFI
     Internet *internet = new WLAN(wifiName, wifiPassword);
 #else
-    Internet *internet = new Cellular(pin1, apn, user, pass, GSM_RX, GSM_TX);
+    Internet *internet = new Cellular_lib(pin1, apn, user, pass, GSM_RX, GSM_TX);
 #endif
 
 void setup() {
