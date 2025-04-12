@@ -13,7 +13,7 @@ void Cellular_lib::connect()
     modem = new TinyGsm(SerialAT);
     client = new TinyGsmClient(*modem);
 
-    TinyGsmAutoBaud(SerialAT, GSM_AUTOBAUD_MIN, GSM_AUTOBAUD_MAX);
+    SerialAT.begin(9600, SERIAL_8N1, rx, tx);
 
     modem->restart();
 
