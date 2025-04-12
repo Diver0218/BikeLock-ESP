@@ -1,6 +1,7 @@
 #define TINY_GSM_MODEM_SIM800
 #define GSM_AUTOBAUD_MIN 9600
 #define GSM_AUTOBAUD_MAX 115200
+#define SerialAT Serial1
 
 #include <TinyGsmClient.h>
 #include <ArduinoHttpClient.h>
@@ -13,7 +14,6 @@ class Cellular_lib : public Internet
 {
     
     private:
-        HardwareSerial *serialAT;
         TinyGsm *modem;
         TinyGsmClient *client;
         HttpClient *http;
