@@ -30,8 +30,8 @@ bool CallbackExecuting = false;
 #define STEPPER_PIN_3 25
 #define STEPPER_PIN_4 26
 
-#define STEPPER_RESOLUTION 2048
-#define STEPS_TO_LOCK 2048
+#define STEPPER_RESOLUTION 4096
+#define STEPS_TO_LOCK 6039
 #define STEPPER_SPEED 10
 
 #define WDT_TIMEOUT 60 //Sekunden
