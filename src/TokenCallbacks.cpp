@@ -22,4 +22,5 @@ void TokenCallbacks::onWrite(BLECharacteristic *characteristic)
         Serial.println("Token is invalid");
     }
     CallbackExecuting = false;
+    bluetoothExecuting = false;
 }
