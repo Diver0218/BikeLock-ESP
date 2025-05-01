@@ -4,6 +4,9 @@ Authentication::Authentication(Internet *internet_module, std::string authURL) :
 
 bool Authentication::validate(std::string token)
 {
+    // TODO: ONLY FOR TESTING
+    return true;
+
     internet_module->connect();
     std::string payload = "{\"token\":\"" + token + "\"}";
     int httpResponseCode = internet_module->post(authURL, payload);
