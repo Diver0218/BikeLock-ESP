@@ -18,7 +18,7 @@ SemaphoreHandle_t gsm_semaphore;
 int readyToSleep = 0;
 bool bluetoothExecuting = false;
 bool CallbackExecuting = false;
-RTC_DATA_ATTR bool isLocked_global = false;
+RTC_DATA_ATTR bool isLocked_global;
 
 #define TINY_GSM_MODEM_SIM800
 #define TINY_GSM_RX_BUFFER   1024
@@ -109,6 +109,7 @@ void setup() {
         Serial.println("GPS task not created");
         readyToSleep++;
     }
+    isLocked_global = false;
 }
 
 void loop() {
