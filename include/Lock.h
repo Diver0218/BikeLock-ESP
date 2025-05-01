@@ -1,4 +1,5 @@
 #include "iLock.h"
+#include "globals.h"
 #include <Arduino.h>
 
 class Lock : public iLock {

@@ -18,6 +18,7 @@ SemaphoreHandle_t gsm_semaphore;
 int readyToSleep = 0;
 bool bluetoothExecuting = false;
 bool CallbackExecuting = false;
+RTC_DATA_ATTR bool isLocked_global = false;
 
 #define TINY_GSM_MODEM_SIM800
 #define TINY_GSM_RX_BUFFER   1024
@@ -58,17 +59,18 @@ bool CallbackExecuting = false;
 #include "Internet.h"
 #include "dummyGPS_Module.h"
 #include "WLAN.h"
-#include "Cellular_lib.h"
+#include "Cellular.h"
 
 void bluetoothComponent(void* parameter);
 void gpsComponent(void* parameter);
 void checkSleep();
 bool checkGPSExecution();
 
+#define USE_WIFI
 #ifdef USE_WIFI
     Internet *internet = new WLAN(wifiName, wifiPassword);
 #else
-    Internet *internet = new Cellular_lib(pin1, apn, user, pass, GSM_RX, GSM_TX);
+    Internet *internet = new Cellular(pin1, apn, user, pass, GSM_RX, GSM_TX);
 #endif
 
 void setup() {
