@@ -15,7 +15,7 @@ SemaphoreHandle_t gsm_semaphore;
     RTC_DATA_ATTR int GPSCount = 50;
 #endif
 
-int readyToSleep = 0;
+int readyToSleep = 0;wa
 bool bluetoothExecuting = false;
 bool CallbackExecuting = false;
 RTC_DATA_ATTR bool isLocked_global;
@@ -35,7 +35,7 @@ RTC_DATA_ATTR bool isLocked_global;
 #define STEPS_TO_LOCK 6039
 #define STEPPER_SPEED 10
 
-#define WDT_TIMEOUT 60 //Sekunden
+#define WDT_TIMEOUT 180 //Sekunden
 
 #define URL "jamin.chickenkiller.com"
 // #define URL "79.249.91.73"
