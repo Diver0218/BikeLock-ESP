@@ -15,7 +15,7 @@ SemaphoreHandle_t gsm_semaphore;
     RTC_DATA_ATTR int GPSCount = 50;
 #endif
 
-int readyToSleep = 0;wa
+int readyToSleep = 0;
 bool bluetoothExecuting = false;
 bool CallbackExecuting = false;
 RTC_DATA_ATTR bool isLocked_global;
